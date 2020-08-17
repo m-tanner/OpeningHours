@@ -1,0 +1,7 @@
+schemaVersion: '2.0.0'
+commandTests:
+  # check that the python binary is in the correct location
+  - name: "python installation"
+    command: "which"
+    args: ["python"]
+    expectedOutput: ["/usr/local/bin/python\n"]

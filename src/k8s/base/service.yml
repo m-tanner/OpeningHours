@@ -1,0 +1,12 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: oh-service
+spec:
+  selector:
+    app: oh-web-app
+  type: NodePort
+  ports:
+    - name: web-node
+      port: 8080

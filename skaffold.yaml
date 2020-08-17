@@ -1,0 +1,54 @@
+apiVersion: skaffold/v2beta1
+kind: Config
+metadata:
+  name: oh-skaffold
+build:
+  artifacts:
+    - image: gcr.io/four-track-friday-2/oh_web_app
+      context: .
+      docker:
+        dockerfile: src/docker/Dockerfile
+        cacheFrom:
+          - python:3.7-alpine
+  tagPolicy:
+    gitCommit: {}
+  local: {}
+test:
+  - image: gcr.io/four-track-friday-2/oh_web_app
+    structureTests:
+      - tests/container-structure/test_commands.yml
+      - tests/container-structure/test_metadata.yml
+profiles:
+  - name: profile-docker-desktop
+    build:
+      local:
+        push: false
+    deploy:
+      kustomize:
+        paths:
+          - src/k8s/dev
+      kubeContext: "docker-desktop"
+    activation:
+      - kubeContext: "docker-desktop"
+  - name: profile-stg
+    build:
+      local:
+        push: true
+    deploy:
+      kustomize:
+        paths:
+          - src/k8s/stg
+      kubeContext: "staging"
+    activation:
+      - kubeContext: "staging"
+  - name: profile-prod
+    build:
+      local:
+        push: true
+    deploy:
+      kustomize:
+        paths:
+          - src/k8s/prod
+      kubeContext: "production"
+    activation:
+      - kubeContext: "production"

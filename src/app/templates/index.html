@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+    <body>
+        <div class="page-header">
+            <header>
+                <h1>Tanner's Submission for Wolt's Coding Challenge</h1>
+            </header>
+        </div>
+
+        <div class="section">
+            <article>
+                <p>
+                    This site only includes an API for now, though a basic front-end could be added.
+                    You can find out more at
+                    <a href="https://github.com/m-tanner/OpeningHours" target="_blank" style="color: #B200FD; text-decoration: underline; display: inline-block">the Github repo</a>
+                    or head straight to the API, using something like
+                    <code>
+                        curl -X POST https://woltchallenge.app/api/v1/get_hours_for_humans -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}'
+                    </code>.
+                </p>
+                <p>
+                    Cheers,<br/>
+                    Tanner
+                </p>
+            </article>
+        </div>
+
+        <div class="footer">
+            <footer>
+                <p>
+                    <a href="https://friendlyventures.io/" target="_blank">Tanner's Résumé</a>
+                </p>
+            </footer>
+        </div>
+    </body>
+{% endblock %}
