@@ -13,6 +13,20 @@ def good_input():
 
 
 @pytest.fixture
+def multi_input():
+    with open("tests/resources/input_with_multiple_openings_same_day.json") as in_file:
+        input_body = json.loads(in_file.read())
+        yield input_body
+
+
+@pytest.fixture
+def multi_output():
+    with open("tests/resources/output_with_multiple_openings_same_day.json") as in_file:
+        input_body = json.loads(in_file.read())
+        yield input_body
+
+
+@pytest.fixture
 def good_output():
     with open("tests/resources/output.json") as in_file:
         output_body = json.loads(in_file.read())
@@ -40,6 +54,16 @@ def test_parser_success(good_input, good_output):
     assert isinstance(good_output, dict)
     assert isinstance(good_output.get("output"), str)
     assert actual_output == good_output.get("output")
+
+
+def test_parser_multi(multi_input, multi_output):
+    parser = Parser(multi_input)
+    actual_output = parser.flatten_to_string()
+
+    assert isinstance(actual_output, str)
+    assert isinstance(multi_output, dict)
+    assert isinstance(multi_output.get("output"), str)
+    assert actual_output == multi_output.get("output")
 
 
 def test_seconds_pass(good_input):

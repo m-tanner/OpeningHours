@@ -16,6 +16,10 @@ This is...
     (venv) user@machine OpeningHours % curl -i -X POST http://127.0.0.1:5000/api/v1/get_hours_for_humans -H "Content-Type: application/json" --data-binary "@tests/resources/input.json"
     ```
 
+## What would I change about the data model
+
+asdf
+
 ## Prerequisites
 
 1) Install necessary software tools. For OS X, this is:

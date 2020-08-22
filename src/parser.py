@@ -2,7 +2,7 @@ from collections import deque
 from datetime import time
 from typing import Dict, List, Deque, Tuple
 
-from src.hours import Hours
+from src.hours import Pair
 from src.restaurant import Restaurant
 
 
@@ -27,8 +27,10 @@ class Parser:
         while self.merged:
             opening = self.merged.popleft()
             closing = self.merged.popleft()
-            hours = Hours(opening=opening[0], closing=closing[0])
-            restaurant.schedule[opening[1].lower()] = hours
+            weekday: str = opening[1].lower()
+            restaurant.schedule[weekday].pairs.append(
+                Pair(opening=opening[0], closing=closing[0])
+            )
 
         return restaurant
 

@@ -1,16 +1,14 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import time
-from typing import Union
+from typing import List
 
 
 @dataclass
-class Hours:
-    opening: Union[time, None] = None
-    closing: Union[time, None] = None
+class Pair:
+    opening: time
+    closing: time
 
     def __repr__(self) -> str:
-        if not self.opening and not self.closing:
-            return "Closed"
         return f"{self.get_time_as_string(self.opening)} - {self.get_time_as_string(self.closing)}"
 
     def get_time_as_string(self, the_time: time) -> str:
@@ -19,3 +17,13 @@ class Hours:
     @staticmethod
     def get_time_without_padding(padded_time: str) -> str:
         return padded_time.lstrip("0").replace(" 0", " ")
+
+
+@dataclass
+class Hours:
+    pairs: List[Pair] = field(default_factory=list)
+
+    def __repr__(self) -> str:
+        if not self.pairs:
+            return "Closed"
+        return ", ".join([str(pair) for pair in self.pairs])
