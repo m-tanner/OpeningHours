@@ -13,6 +13,9 @@ class Parser:
         self.closings: Deque[Tuple[time, str]] = deque()
         self.merged: Deque[Tuple[time, str]] = deque()
 
+    def flatten_to_string(self) -> str:
+        return str(self.flatten_to_restaurant())
+
     def flatten_to_restaurant(self) -> Restaurant:
         self.parse_json_in()
 
@@ -44,11 +47,19 @@ class Parser:
 
     def to_time(self, value: str) -> time:
         seconds = int(value)
+        self.validate_seconds(value=seconds)
 
         hours = self.get_hours_from_seconds(seconds)
         minutes = self.get_minutes_from_seconds(seconds) - hours * 60
 
         return time(hour=hours, minute=minutes)
+
+    @staticmethod
+    def validate_seconds(value: int) -> None:
+        if 0 > value:
+            raise RuntimeError("Seconds cannot be less than 0.")
+        if value > 86399:
+            raise RuntimeError("Seconds cannot be great than 86399.")
 
     def get_hours_from_seconds(self, seconds: int) -> int:
         return self.get_minutes_from_seconds(seconds) // 60

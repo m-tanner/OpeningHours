@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from datetime import time
+from typing import Union
 
 
 @dataclass
 class Hours:
-    opening: time = None
-    closing: time = None
+    opening: Union[time, None] = None
+    closing: Union[time, None] = None
 
     def __repr__(self) -> str:
         if not self.opening and not self.closing:

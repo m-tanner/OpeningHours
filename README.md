@@ -132,10 +132,10 @@ This is...
     minikube start --driver hyperkit --kubernetes-version v1.16.12 --addons ingress --mount-string "$HOME:$HOME" --mount
     ```
 
-7) Setup Kubernetes
+7) Setup Kubernetes locally
     ```
     # make the namespace you'll use for the particular environment
-    user@machine OpeningHours % kubectl apply -f src/k8s/<dev, stg, prod>/namespace.yml
+    user@machine OpeningHours % kubectl apply -f src/k8s/dev/namespace.yml
    
     # set kubectl to use that namespace
     user@machine OpeningHours % kubectl config set-context --current --namespace=development
@@ -145,7 +145,6 @@ This is...
     
     # in a free terminal tab
     kubectl proxy
-    
     # would have to do this to actually connect since minikube isn't handling auth
     https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
     
