@@ -2,7 +2,7 @@
   "monday": [],
   "tuesday": [
     {
-      "type": "open",
+      "type": "unknown",
       "value": 36000
     },
     {

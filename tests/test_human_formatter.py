@@ -8,6 +8,15 @@ def test_human_formatter():
         input_body = json.loads(in_file.read())
 
     with open("tests/resources/output.json") as in_file:
-        output_body = json.loads(in_file.read())
+        verified_output = json.loads(in_file.read())
 
-    assert get_for_human(input_body) == output_body
+    actual_output = get_for_human(input_body)
+
+    assert isinstance(actual_output, str)
+    assert isinstance(verified_output, dict)
+    assert isinstance(verified_output.get("output"), str)
+    assert actual_output == verified_output.get("output")
+
+
+if __name__ == "__main__":
+    test_human_formatter()

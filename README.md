@@ -8,7 +8,12 @@ This is...
 
 1) Use cURL to send a POST request to the API
     ```
-    curl -X POST https://woltchallenge.app/api/v1/get_hours_for_humans -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}'
+    curl -X POST http://woltchallenge.app/api/v1/get_hours_for_humans -H "Content-Type: application/json" -d '{"monday": [], "tuesday": [ { "type": "open", "value": 36000 }, { "type": "close", "value": 64800 } ], "wednesday": [], "thursday": [ { "type": "open", "value": 36000 }, { "type": "close", "value": 64800 } ], "friday": [ { "type": "open", "value": 36000 } ], "saturday": [ { "type": "close", "value": 3600 }, { "type": "open", "value": 36000 } ], "sunday": [ { "type": "close", "value": 3600 }, { "type": "open", "value": 43200 }, { "type": "close", "value": 75600 } ] }'
+    ```
+2) Or if running locally using `flask run` you can use file as the data
+    ```
+    (venv) user@machine OpeningHours % flask run
+    (venv) user@machine OpeningHours % curl -i -X POST http://127.0.0.1:5000/api/v1/get_hours_for_humans -H "Content-Type: application/json" --data-binary "@tests/resources/input.json"
     ```
 
 ## Prerequisites
@@ -189,7 +194,7 @@ This is...
     (venv) user@machine OpeningHours % coverage run --source=src/ -m pytest tests/ -s -v --disable-pytest-warnings
    
     # generate coverage report
-    (venv) user@machine OpeningHours % coverage report --omit='' -m --fail-under=1
+    (venv) user@machine OpeningHours % coverage report --omit='src/app/*' -m --fail-under=100
     ```
    
 ## Building

@@ -13,10 +13,65 @@
                 <p>
                     This site only includes an API for now, though a basic front-end could be added.
                     You can find out more at
-                    <a href="https://github.com/m-tanner/OpeningHours" target="_blank" style="color: #B200FD; text-decoration: underline; display: inline-block">the Github repo</a>
+                    <a href="https://github.com/m-tanner/OpeningHours" target="_blank"
+                       style="color: #B200FD; text-decoration: underline; display: inline-block">the Github repo</a>
                     or head straight to the API, using something like
                     <code>
-                        curl -X POST https://woltchallenge.app/api/v1/get_hours_for_humans -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}'
+                        curl -X POST https://woltchallenge.app/api/v1/get_hours_for_humans -H "Content-Type:
+                        application/json" -d
+                        '{"monday": [],
+                        "tuesday": [
+                        {
+                        "type": "open",
+                        "value": 36000
+                        },
+                        {
+                        "type": "close",
+                        "value": 64800
+                        }
+                        ],
+                        "wednesday": [],
+                        "thursday": [
+                        {
+                        "type": "open",
+                        "value": 36000
+                        },
+                        {
+                        "type": "close",
+                        "value": 64800
+                        }
+                        ],
+                        "friday": [
+                        {
+                        "type": "open",
+                        "value": 36000
+                        }
+                        ],
+                        "saturday": [
+                        {
+                        "type": "close",
+                        "value": 3600
+                        },
+                        {
+                        "type": "open",
+                        "value": 36000
+                        }
+                        ],
+                        "sunday": [
+                        {
+                        "type": "close",
+                        "value": 3600
+                        },
+                        {
+                        "type": "open",
+                        "value": 43200
+                        },
+                        {
+                        "type": "close",
+                        "value": 75600
+                        }
+                        ]
+                        }'
                     </code>.
                 </p>
                 <p>
