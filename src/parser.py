@@ -47,8 +47,12 @@ class Parser:
                 else:
                     raise RuntimeError("Unknown event type provided.")
 
-        monday_openings = len([event for event in self.openings if event[1].lower() == "monday"])
-        monday_closings = len([event for event in self.closings if event[1].lower() == "monday"])
+        monday_openings = len(
+            [event for event in self.openings if event[1].lower() == "monday"]
+        )
+        monday_closings = len(
+            [event for event in self.closings if event[1].lower() == "monday"]
+        )
         if monday_openings != monday_closings:
             # one of the closings is for Sunday, it will be the first one
             # make it the last one
