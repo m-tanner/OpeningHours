@@ -3,6 +3,7 @@ class InvalidUsage(Exception):
     Example implementation from:
     https://flask.palletsprojects.com/en/1.1.x/patterns/apierrors/
     """
+
     status_code = 400
 
     def __init__(self, message, status_code=None, payload=None):
@@ -14,5 +15,5 @@ class InvalidUsage(Exception):
 
     def to_dict(self):
         result = dict(self.payload or ())
-        result['message'] = self.message
+        result["message"] = self.message
         return result

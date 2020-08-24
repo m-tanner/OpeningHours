@@ -2,7 +2,7 @@ from collections import deque
 from datetime import time
 from typing import Dict, List, Deque, Tuple
 
-from src.hours import Pair
+from src.pair import Pair
 from src.restaurant import Restaurant
 
 
@@ -61,7 +61,7 @@ class Parser:
         if 0 > value:
             raise RuntimeError("Seconds cannot be less than 0.")
         if value > 86399:
-            raise RuntimeError("Seconds cannot be great than 86399.")
+            raise RuntimeError("Seconds cannot be greater than 86399.")
 
     def get_hours_from_seconds(self, seconds: int) -> int:
         return self.get_minutes_from_seconds(seconds) // 60
