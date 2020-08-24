@@ -29,8 +29,7 @@ You can see how I handled the current data model by first looking at the Parser 
 I "flatten" the data using a few custom classes, namely Pair, Hours, and Restaurant. Using a merge
 sort mentality, I first split all the incoming events into openings and closings. Then, I merge them together
 as a single list of openings and closings. However, I assume they
-come in properly ordered (Monday to Sunday). I also assumed that no business will remain open through midnight
-on a Sunday.
+come in properly ordered (Monday to Sunday).
 
 If the data could come in more closely aligned to these custom classes, less parsing would be necessary.
 For example, the logic we need so that we can handle closings across multiple days could go away if the pairs of
@@ -41,7 +40,7 @@ openings and closings would be contained in the relevant day instead of on the d
 What would I improve about this solution before putting it into production?
 
 1) I would probably need to remove the assumption that opening hours only start on Monday and no business remains
-open through Sunday night. Right now, that would break the parser.
+open through Sunday night. Right now, that would break the parser. FIXED!
 2) Some sort of authentication on the API would be desirable. That would allow for user/service-based rate limiting
 and other such resiliency improvements.
 3) Logging. I don't have logging anywhere, but it would be necessary in production to know what's going on in the system.

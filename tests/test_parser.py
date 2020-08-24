@@ -13,6 +13,13 @@ def good_input():
 
 
 @pytest.fixture
+def good_output():
+    with open("tests/resources/output.json") as in_file:
+        output_body = json.loads(in_file.read())
+        yield output_body
+
+
+@pytest.fixture
 def multi_input():
     with open("tests/resources/input_with_multiple_openings_same_day.json") as in_file:
         input_body = json.loads(in_file.read())
@@ -22,13 +29,6 @@ def multi_input():
 @pytest.fixture
 def multi_output():
     with open("tests/resources/output_with_multiple_openings_same_day.json") as in_file:
-        input_body = json.loads(in_file.read())
-        yield input_body
-
-
-@pytest.fixture
-def good_output():
-    with open("tests/resources/output.json") as in_file:
         output_body = json.loads(in_file.read())
         yield output_body
 
@@ -38,6 +38,20 @@ def bad_input():
     with open("tests/resources/unknown_event.json") as in_file:
         input_body = json.loads(in_file.read())
         yield input_body
+
+
+@pytest.fixture
+def sunday_monday_input():
+    with open("tests/resources/input_with_sunday_to_monday.json") as in_file:
+        input_body = json.loads(in_file.read())
+        yield input_body
+
+
+@pytest.fixture
+def sunday_monday_output():
+    with open("tests/resources/output_with_sunday_to_monday.json") as in_file:
+        output_body = json.loads(in_file.read())
+        yield output_body
 
 
 def test_parser_fail(bad_input):
@@ -64,6 +78,16 @@ def test_parser_multi(multi_input, multi_output):
     assert isinstance(multi_output, dict)
     assert isinstance(multi_output.get("output"), str)
     assert actual_output == multi_output.get("output")
+
+
+def test_parser_sunday_monday(sunday_monday_input, sunday_monday_output):
+    parser = Parser(sunday_monday_input)
+    actual_output = parser.flatten_to_string()
+
+    assert isinstance(actual_output, str)
+    assert isinstance(sunday_monday_output, dict)
+    assert isinstance(sunday_monday_output.get("output"), str)
+    assert actual_output == sunday_monday_output.get("output")
 
 
 def test_seconds_pass(good_input):
