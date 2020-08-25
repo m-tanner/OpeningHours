@@ -1,131 +1,56 @@
-import json
-
 import pytest
 
-from src.parser import Parser
 
-
-@pytest.fixture
-def good_input():
-    with open("tests/resources/input.json") as in_file:
-        input_body = json.loads(in_file.read())
-        yield input_body
-
-
-@pytest.fixture
-def good_output():
-    with open("tests/resources/output.json") as in_file:
-        output_body = json.loads(in_file.read())
-        yield output_body
-
-
-@pytest.fixture
-def multi_input():
-    with open("tests/resources/input_with_multiple_openings_same_day.json") as in_file:
-        input_body = json.loads(in_file.read())
-        yield input_body
-
-
-@pytest.fixture
-def multi_output():
-    with open("tests/resources/output_with_multiple_openings_same_day.json") as in_file:
-        output_body = json.loads(in_file.read())
-        yield output_body
-
-
-@pytest.fixture
-def bad_input():
-    with open("tests/resources/unknown_event.json") as in_file:
-        input_body = json.loads(in_file.read())
-        yield input_body
-
-
-@pytest.fixture
-def sunday_monday_input():
-    with open("tests/resources/input_with_sunday_to_monday.json") as in_file:
-        input_body = json.loads(in_file.read())
-        yield input_body
-
-
-@pytest.fixture
-def sunday_monday_output():
-    with open("tests/resources/output_with_sunday_to_monday.json") as in_file:
-        output_body = json.loads(in_file.read())
-        yield output_body
-
-
-@pytest.fixture
-def all_closed_input():
-    with open("tests/resources/input_all_closed.json") as in_file:
-        input_body = json.loads(in_file.read())
-        yield input_body
-
-
-@pytest.fixture
-def all_closed_output():
-    with open("tests/resources/output_all_closed.json") as in_file:
-        output_body = json.loads(in_file.read())
-        yield output_body
-
-
-def test_parser_fail(bad_input):
-    parser = Parser(bad_input)
+def test_fail(parser, unknown_event):
     with pytest.raises(RuntimeError):
-        parser.flatten_to_string()
+        parser.parse_json_in(unknown_event)
 
 
-def test_parser_success(good_input, good_output):
-    parser = Parser(good_input)
-    actual_output = parser.flatten_to_string()
+def test_success(parser, good_input):
+    parsed_input = parser.parse_json_in(good_input)
 
-    assert isinstance(actual_output, str)
-    assert isinstance(good_output, dict)
-    assert isinstance(good_output.get("output"), str)
-    assert actual_output == good_output.get("output")
+    assert isinstance(parsed_input, dict)
 
 
-def test_parser_multi(multi_input, multi_output):
-    parser = Parser(multi_input)
-    actual_output = parser.flatten_to_string()
+def test_multi(parser, multiple_openings_same_day_input):
+    parsed_input = parser.parse_json_in(multiple_openings_same_day_input)
 
-    assert isinstance(actual_output, str)
-    assert isinstance(multi_output, dict)
-    assert isinstance(multi_output.get("output"), str)
-    assert actual_output == multi_output.get("output")
+    assert isinstance(parsed_input, dict)
 
 
-def test_parser_sunday_monday(sunday_monday_input, sunday_monday_output):
-    parser = Parser(sunday_monday_input)
-    actual_output = parser.flatten_to_string()
+def test_sunday_monday(parser, sunday_to_monday_input):
+    parsed_input = parser.parse_json_in(sunday_to_monday_input)
 
-    assert isinstance(actual_output, str)
-    assert isinstance(sunday_monday_output, dict)
-    assert isinstance(sunday_monday_output.get("output"), str)
-    assert actual_output == sunday_monday_output.get("output")
+    assert isinstance(parsed_input, dict)
 
 
-def test_parser_all_closed(all_closed_input, all_closed_output):
-    parser = Parser(all_closed_input)
-    actual_output = parser.flatten_to_string()
+def test_all_closed(parser, all_closed_input):
+    parsed_input = parser.parse_json_in(all_closed_input)
 
-    assert isinstance(actual_output, str)
-    assert isinstance(all_closed_output, dict)
-    assert isinstance(all_closed_output.get("output"), str)
-    assert actual_output == all_closed_output.get("output")
+    assert isinstance(parsed_input, dict)
 
 
-def test_seconds_pass(good_input):
-    parser = Parser(good_input)
-    parser.validate_seconds(value=1)
+def test_unbalanced(parser, unbalanced_input):
+    parsed_input = parser.parse_json_in(unbalanced_input)
+
+    assert isinstance(parsed_input, dict)
 
 
-def test_seconds_negative(good_input):
-    parser = Parser(good_input)
+def test_bad_event_value(parser, bad_event_value_input):
     with pytest.raises(RuntimeError):
-        parser.validate_seconds(value=-1)
+        parser.parse_json_in(bad_event_value_input)
 
 
-def test_seconds_above_max(good_input):
-    parser = Parser(good_input)
+def test_seconds_too_low(parser, time_too_low):
     with pytest.raises(RuntimeError):
-        parser.validate_seconds(value=86400)
+        parser.parse_json_in(time_too_low)
+
+
+def test_seconds_too_high(parser, time_too_high):
+    with pytest.raises(RuntimeError):
+        parser.parse_json_in(time_too_high)
+
+
+def test_missing_entry(parser, missing_entry_input):
+    with pytest.raises(RuntimeError):
+        parser.parse_json_in(missing_entry_input)
