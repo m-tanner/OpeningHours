@@ -2,42 +2,22 @@ from collections import deque
 from datetime import time
 from typing import Dict, List, Deque, Tuple
 
-from src.pair import Pair
-from src.restaurant import Restaurant
-
 
 class Parser:
+    __slots__ = [
+        "json_in",
+        "openings",
+        "closings",
+        "merged"
+    ]
+
     def __init__(self, json_in: Dict[str, List[Dict[str, str]]]):
         self.json_in = json_in
         self.openings: Deque[Tuple[time, str]] = deque()
         self.closings: Deque[Tuple[time, str]] = deque()
         self.merged: Deque[Tuple[time, str]] = deque()
 
-    def flatten_to_string(self) -> str:
-        return str(self.flatten_to_restaurant())
-
-    def flatten_to_restaurant(self) -> Restaurant:
-        self.parse_json_in()
-
-        while self.openings or self.closings:
-            if self.openings:
-                self.merged.append(self.openings.popleft())
-            if self.closings:
-                self.merged.append(self.closings.popleft())
-
-        restaurant = Restaurant()
-        while self.merged:
-            opening = self.merged.popleft()
-            closing = self.merged.popleft()
-            weekday: str = opening[1].lower()
-            # TODO they tested an "eigthday" that broke here
-            restaurant.schedule[weekday].pairs.append(
-                Pair(opening=opening[0], closing=closing[0])
-            )
-
-        return restaurant
-
-    def parse_json_in(self) -> None:
+    def parse_json_in(self) -> Dict[str, Deque[Tuple[time, str]]]:
         for day, events in self.json_in.items():
             for event in events:
                 event_type = event.get("type")
@@ -61,7 +41,12 @@ class Parser:
             # make it the last one
             self.closings.append(self.closings.popleft())
 
+        return {key: getattr(self, key, None) for key in self.__slots__}
+
     def to_time(self, value: str) -> time:
+        if not value:
+            raise RuntimeError("Event value (time) required. Can't be null.")
+
         seconds = int(value)
         self.validate_seconds(value=seconds)
 
