@@ -54,6 +54,20 @@ def sunday_monday_output():
         yield output_body
 
 
+@pytest.fixture
+def all_closed_input():
+    with open("tests/resources/input_all_closed.json") as in_file:
+        input_body = json.loads(in_file.read())
+        yield input_body
+
+
+@pytest.fixture
+def all_closed_output():
+    with open("tests/resources/output_all_closed.json") as in_file:
+        output_body = json.loads(in_file.read())
+        yield output_body
+
+
 def test_parser_fail(bad_input):
     parser = Parser(bad_input)
     with pytest.raises(RuntimeError):
@@ -88,6 +102,16 @@ def test_parser_sunday_monday(sunday_monday_input, sunday_monday_output):
     assert isinstance(sunday_monday_output, dict)
     assert isinstance(sunday_monday_output.get("output"), str)
     assert actual_output == sunday_monday_output.get("output")
+
+
+def test_parser_all_closed(all_closed_input, all_closed_output):
+    parser = Parser(all_closed_input)
+    actual_output = parser.flatten_to_string()
+
+    assert isinstance(actual_output, str)
+    assert isinstance(all_closed_output, dict)
+    assert isinstance(all_closed_output.get("output"), str)
+    assert actual_output == all_closed_output.get("output")
 
 
 def test_seconds_pass(good_input):
