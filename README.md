@@ -130,6 +130,9 @@ If you just want to run the flask app locally, this is the fastest way:
    
     # generate coverage report
     (venv) user@machine OpeningHours % coverage report --omit='src/app/*' -m --fail-under=100
+   
+    # or run them all at once (this example uses zsh)
+    (venv) user@machine OpeningHours % /bin/zsh ci.sh
     ```
    
 ## Building
