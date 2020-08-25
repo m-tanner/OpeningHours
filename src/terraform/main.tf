@@ -63,4 +63,6 @@ resource "google_dns_record_set" "opening_hours_prod_redirect" {
 
 resource "google_storage_bucket" "static_content" {
   name = "static.woltchallenge.app"
+  location = "us-west1"
+  bucket_policy_only = true
 }
