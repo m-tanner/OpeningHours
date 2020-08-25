@@ -4,12 +4,10 @@ from datetime import time
 import pytest
 
 from src.flattener import Flattener
-from src.parser import Parser
 from src.validator import Validator
 
 
-def test_success(good_input, good_output):
-    parser = Parser()
+def test_success(parser, good_input, good_output):
     parsed_input = parser.parse_json_in(good_input)
     validator = Validator(parsed_input=parsed_input)
     validator.validate()
@@ -22,8 +20,9 @@ def test_success(good_input, good_output):
     assert actual_output == good_output.get("output")
 
 
-def test_multi(multiple_openings_same_day_input, multiple_openings_same_day_output):
-    parser = Parser()
+def test_multi(
+        parser, multiple_openings_same_day_input, multiple_openings_same_day_output
+):
     parsed_input = parser.parse_json_in(multiple_openings_same_day_input)
     validator = Validator(parsed_input=parsed_input)
     validator.validate()
@@ -36,8 +35,7 @@ def test_multi(multiple_openings_same_day_input, multiple_openings_same_day_outp
     assert actual_output == multiple_openings_same_day_output.get("output")
 
 
-def test_sunday_monday(sunday_to_monday_input, sunday_to_monday_output):
-    parser = Parser()
+def test_sunday_monday(parser, sunday_to_monday_input, sunday_to_monday_output):
     parsed_input = parser.parse_json_in(sunday_to_monday_input)
     validator = Validator(parsed_input=parsed_input)
     validator.validate()
@@ -50,8 +48,7 @@ def test_sunday_monday(sunday_to_monday_input, sunday_to_monday_output):
     assert actual_output == sunday_to_monday_output.get("output")
 
 
-def test_all_closed(all_closed_input, all_closed_output):
-    parser = Parser()
+def test_all_closed(parser, all_closed_input, all_closed_output):
     parsed_input = parser.parse_json_in(all_closed_input)
     validator = Validator(parsed_input=parsed_input)
     validator.validate()
@@ -64,8 +61,7 @@ def test_all_closed(all_closed_input, all_closed_output):
     assert actual_output == all_closed_output.get("output")
 
 
-def test_unbalanced(unbalanced_input):
-    parser = Parser()
+def test_unbalanced(parser, unbalanced_input):
     parsed_input = parser.parse_json_in(unbalanced_input)
     validator = Validator(parsed_input=parsed_input)
 
