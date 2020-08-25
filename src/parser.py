@@ -4,39 +4,36 @@ from typing import Dict, List, Deque, Tuple
 
 
 class Parser:
-    __slots__ = ["openings", "closings"]
-
-    def __init__(self):
-        self.openings: Deque[Tuple[time, str]] = deque()
-        self.closings: Deque[Tuple[time, str]] = deque()
-
     def parse_json_in(
         self, json_in: Dict[str, List[Dict[str, str]]]
     ) -> Dict[str, Deque[Tuple[time, str]]]:
+        openings: Deque[Tuple[time, str]] = deque()
+        closings: Deque[Tuple[time, str]] = deque()
+
         for day, events in json_in.items():
             for event in events:
                 event_type = event.get("type")
                 event_value = event.get("value")
                 new_time = self.to_time(value=event_value)
                 if event_type == "open":
-                    self.openings.append((new_time, day))
+                    openings.append((new_time, day))
                 elif event_type == "close":
-                    self.closings.append((new_time, day))
+                    closings.append((new_time, day))
                 else:
                     raise RuntimeError("Unknown event type provided.")
 
         monday_openings = len(
-            [event for event in self.openings if event[1].lower() == "monday"]
+            [event for event in openings if event[1].lower() == "monday"]
         )
         monday_closings = len(
-            [event for event in self.closings if event[1].lower() == "monday"]
+            [event for event in closings if event[1].lower() == "monday"]
         )
         if monday_closings > monday_openings:
             # one of the closings is for Sunday, it will be the first one
             # make it the last one
-            self.closings.append(self.closings.popleft())
+            closings.append(closings.popleft())
 
-        return self.to_dict()
+        return {"openings": openings, "closings": closings}
 
     def to_time(self, value: str) -> time:
         if not value:
@@ -63,6 +60,3 @@ class Parser:
     @staticmethod
     def get_minutes_from_seconds(seconds: int) -> int:
         return seconds // 60
-
-    def to_dict(self) -> Dict[str, Deque[Tuple[time, str]]]:
-        return {key: getattr(self, key, None) for key in self.__slots__}
