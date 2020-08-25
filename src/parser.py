@@ -30,6 +30,7 @@ class Parser:
             opening = self.merged.popleft()
             closing = self.merged.popleft()
             weekday: str = opening[1].lower()
+            # TODO they tested an "eigthday" that broke here
             restaurant.schedule[weekday].pairs.append(
                 Pair(opening=opening[0], closing=closing[0])
             )
