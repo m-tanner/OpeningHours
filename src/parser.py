@@ -4,21 +4,16 @@ from typing import Dict, List, Deque, Tuple
 
 
 class Parser:
-    __slots__ = [
-        "json_in",
-        "openings",
-        "closings",
-        "merged"
-    ]
+    __slots__ = ["openings", "closings"]
 
-    def __init__(self, json_in: Dict[str, List[Dict[str, str]]]):
-        self.json_in = json_in
+    def __init__(self):
         self.openings: Deque[Tuple[time, str]] = deque()
         self.closings: Deque[Tuple[time, str]] = deque()
-        self.merged: Deque[Tuple[time, str]] = deque()
 
-    def parse_json_in(self) -> Dict[str, Deque[Tuple[time, str]]]:
-        for day, events in self.json_in.items():
+    def parse_json_in(
+        self, json_in: Dict[str, List[Dict[str, str]]]
+    ) -> Dict[str, Deque[Tuple[time, str]]]:
+        for day, events in json_in.items():
             for event in events:
                 event_type = event.get("type")
                 event_value = event.get("value")
@@ -41,7 +36,7 @@ class Parser:
             # make it the last one
             self.closings.append(self.closings.popleft())
 
-        return {key: getattr(self, key, None) for key in self.__slots__}
+        return self.to_dict()
 
     def to_time(self, value: str) -> time:
         if not value:
@@ -68,3 +63,6 @@ class Parser:
     @staticmethod
     def get_minutes_from_seconds(seconds: int) -> int:
         return seconds // 60
+
+    def to_dict(self) -> Dict[str, Deque[Tuple[time, str]]]:
+        return {key: getattr(self, key, None) for key in self.__slots__}

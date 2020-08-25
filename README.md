@@ -52,6 +52,53 @@ a production application.
 6) I'm sure we'll find a lot more to improve during our feedback discussion about my submission. Of course, I'd
 want to address everything you mention!
 
+## Errors seen during Wolt testing
+These are the errors I saw when you tested my application. I mentioned above that I needed to add more logging,
+which is true. I would have seen your input if I had added logging. However, I have basic error logging
+for free from Kubernetes, so I saw the error messages. I'll reproduce them here.
+
+1) Came from submitting an unbalanced input (openings != closings) 
+    ```
+    IndexError: pop from an empty deque
+        at flatten_to_restaurant (/OpeningHoursService/src/parser.py:23)
+        at flatten_to_string (/OpeningHoursService/src/parser.py:17)
+        at get_hours_for_humans (/OpeningHoursService/src/app/api/views.py:15)
+        at dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1936)
+        at full_dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1950)
+        at reraise (/usr/local/lib/python3.7/site-packages/flask/_compat.py:39)
+        at handle_user_exception (/usr/local/lib/python3.7/site-packages/flask/app.py:1821)
+        at full_dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1952)
+        at wsgi_app (/usr/local/lib/python3.7/site-packages/flask/app.py:2447)
+    ```
+2) Came from submitting null as the time
+    ```
+    TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
+        at to_time (/OpeningHoursService/src/parser.py:65)
+        at parse_json_in (/OpeningHoursService/src/parser.py:45)
+        at flatten_to_restaurant (/OpeningHoursService/src/parser.py:20)
+        at flatten_to_string (/OpeningHoursService/src/parser.py:17)
+        at get_hours_for_humans (/OpeningHoursService/src/app/api/views.py:15)
+        at dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1936)
+        at full_dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1950)
+        at reraise (/usr/local/lib/python3.7/site-packages/flask/_compat.py:39)
+        at handle_user_exception (/usr/local/lib/python3.7/site-packages/flask/app.py:1821)
+        at full_dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1952)
+        at wsgi_app (/usr/local/lib/python3.7/site-packages/flask/app.py:2447)
+    ```
+3) Came from submitting an unsupported day of the week
+    ```
+    KeyError: 'eighthday'
+        at flatten_to_restaurant (/OpeningHoursService/src/parser.py:31)
+        at flatten_to_string (/OpeningHoursService/src/parser.py:17)
+        at get_hours_for_humans (/OpeningHoursService/src/app/api/views.py:15)
+        at dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1936)
+        at full_dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1950)
+        at reraise (/usr/local/lib/python3.7/site-packages/flask/_compat.py:39)
+        at handle_user_exception (/usr/local/lib/python3.7/site-packages/flask/app.py:1821)
+        at full_dispatch_request (/usr/local/lib/python3.7/site-packages/flask/app.py:1952)
+        at wsgi_app (/usr/local/lib/python3.7/site-packages/flask/app.py:2447)
+    ```
+
 ## Quickstart
 
 If you just want to run the flask app locally, this is the fastest way:
