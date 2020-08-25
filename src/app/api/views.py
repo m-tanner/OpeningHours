@@ -31,6 +31,10 @@ def get_hours_for_humans():
         validator.validate()
 
         flattener = Flattener(parsed_input=parsed_input)
-        return jsonify(output=flattener.flatten_to_string())
+
+        result = flattener.flatten_to_string()
+        logger.log(level=logging.INFO, msg=result.replace("\n", " "))
+        return jsonify(output=result)
     except RuntimeError as err:
+        logger.log(level=logging.INFO, msg=err)
         raise InvalidUsage(str(err), status_code=400)

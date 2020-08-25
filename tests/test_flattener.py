@@ -21,7 +21,7 @@ def test_success(parser, good_input, good_output):
 
 
 def test_multi(
-        parser, multiple_openings_same_day_input, multiple_openings_same_day_output
+    parser, multiple_openings_same_day_input, multiple_openings_same_day_output
 ):
     parsed_input = parser.parse_json_in(multiple_openings_same_day_input)
     validator = Validator(parsed_input=parsed_input)
