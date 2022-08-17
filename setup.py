@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 requirements = [
     "flask==1.1.2",
-    "waitress==1.4.4",
+    "waitress>=2.1.1",
     "click==7.1.2",
     "wtforms==2.3.3",
     "flask-wtf==0.14.3",
